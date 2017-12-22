@@ -1,0 +1,69 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.1.125:3306/sell?charsetEncoding=utf8mb4&useSSL=false
+    username: root
+    password: 123456
+    type: com.alibaba.druid.pool.DruidDataSource
+
+    druid:
+      # 连接池配置
+      initial-size: 5
+      max-active: 20
+      min-idle: 5
+      max-wait: 3000
+      # 是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+      pool-prepared-statements: false
+      # 要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      max-pool-prepared-statement-per-connection-size: 20
+      # max-open-prepared-statements: 和上面的等价
+      validation-query: select 1
+      validation-query-timeout: 600
+      test-on-borrow: true
+      test-on-return: false
+      test-while-idle: true
+      # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接
+      time-between-eviction-runs-millis: 60000
+      # 配置一个连接在池中最小生存的时间
+      min-evictable-idle-time-millis: 30000
+      # max-evictable-idle-time-milli:
+      # 属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：
+      # 监控统计用的filter:stat, 日志用的filter:log4j, 防御sql注入的filter:wall
+      filters: #配置多个英文逗号分隔
+
+      # 监控配置
+      # WebStatFilter配置，说明请参考Druid Wiki，配置_配置WebStatFilter
+      web-stat-filter.enabled: true #是否启用StatFilter默认值true
+      web-stat-filter.url-pattern: /*
+      web-stat-filter.exclusions: "*.js,*.css,/druid*,*.jsp,*.swf"
+      web-stat-filter.session-stat-enable:
+      web-stat-filter.session-stat-max-count:
+      web-stat-filter.principal-session-name:
+      web-stat-filter.principal-cookie-name:
+      web-stat-filter.profile-enable:
+      
+      # StatViewServlet配置，说明请参考Druid Wiki，配置_StatViewServlet配置
+      stat-view-servlet.enabled: true #是否启用StatViewServlet默认值true
+      stat-view-servlet.url-pattern: /druid/*
+      stat-view-servlet.reset-enable:
+      stat-view-servlet.login-username: druid
+      stat-view-servlet.login-password: druid
+      stat-view-servlet.allow:
+      stat-view-servlet.deny:
+
+      # Spring监控配置，说明请参考Druid GitHub Wiki，配置_Druid和Spring关联监控配置
+      # aop-patterns: # Spring监控AOP切入点，如x.y.z.service.*,配置多个英文逗号分隔
+      # 如果spring.datasource.druid.aop-patterns要代理的类没有定义interface请设置spring.aop.proxy-target-class:true
+
+  jpa:
+    show-sql: true
+
+server:
+  context-path: /sell
+#logging:
+#  pattern:
+#    console: "%d - %msg%n"
+#  file: D:/log/tomcat/sell.log
+#  level:
+#    com.fizz.LoggerTest: debug
+
