@@ -14,9 +14,11 @@ public enum ResultEnum {
 	PRODUCT_NOT_EXIST(30, "商品不存在"),
 	PRODUCT_STOCK_UNABLED(40, "商品库存不足"),
 	ORDER_STATUS_ERROR(50, "订单状态错误"),
-	CANCEL_ORDER_ERROR(60, "取消订单错误"),
-	FINISH_ORDER_ERROR(70, "完结订单错误"),
-	PAID_ORDER_ERROR(80, "收款错误"),
+	PAY_STATUS_ERROR(60, "支付状态错误"),
+	CANCEL_ORDER_ERROR(70, "取消订单错误"),
+	FINISH_ORDER_ERROR(80, "完结订单错误"),
+	FINISH_PAY_ERROR(90, "支付订单错误"),
+	PAID_ORDER_ERROR(100, "收款错误"),
 	;
 
 

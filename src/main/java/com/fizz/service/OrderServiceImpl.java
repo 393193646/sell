@@ -185,13 +185,25 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	@Transactional
 	public OrderDTO paid(OrderDTO orderDTO) {
+		//验证订单状态
+		if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+			log.error("【支付订单】, 订单状态不正确, orderId={}, orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
+			throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+		}
+		//验证支付状态
+		if (!orderDTO.getPayStatus().equals(PayStatusEnum.WAIT.getCode())) {
+			log.error("【支付订单】, 支付状态不正确, orderId={}, payStatus={}", orderDTO.getOrderId(), orderDTO.getPayStatus());
+			throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+		}
+		//更新支付状态
 		orderDTO.setPayStatus(1);
 		OrderMaster orderMaster = new OrderMaster();
 		BeanUtils.copyNotNullProperties(orderDTO, orderMaster);
 		OrderMaster save = save(orderMaster);
 		if (save == null) {
-			log.error("【订单付款】, 付款失败, orderId={}, orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
+			log.error("【支付订单】, 更新失败, orderId={}, payStatus={}", orderDTO.getOrderId(), orderDTO.getPayStatus());
 			throw new SellException(ResultEnum.FINISH_ORDER_ERROR);
 		}
 		return orderDTO;
