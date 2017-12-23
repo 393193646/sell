@@ -2,6 +2,7 @@ package com.fizz.service;
 
 import com.fizz.Enums.OrderStatusEnum;
 import com.fizz.Enums.PayStatusEnum;
+import com.fizz.constant.PageConstant;
 import com.fizz.dateobject.OrderDetail;
 import com.fizz.dto.OrderDTO;
 import org.junit.Assert;
@@ -59,7 +60,7 @@ public class OrderServiceImplTest {
 
 	@Test
 	public void findList() throws Exception {
-		service.findList(BUYER_OPENID, new PageRequest(0, 10));
+		service.findList(BUYER_OPENID, new PageRequest(PageConstant.PAGE, PageConstant.SIZE));
 	}
 
 	@Test

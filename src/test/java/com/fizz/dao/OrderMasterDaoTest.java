@@ -1,5 +1,6 @@
 package com.fizz.dao;
 
+import com.fizz.constant.PageConstant;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class OrderMasterDaoTest {
 
 	@Test
 	public void findAllByBuyerOpenid() throws Exception {
-		dao.findAllByBuyerOpenid("123", new PageRequest(0, 10));
+		dao.findAllByBuyerOpenid("123", new PageRequest(PageConstant.PAGE, PageConstant.SIZE));
 	}
 
 }

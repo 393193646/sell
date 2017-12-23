@@ -15,4 +15,18 @@ public class ResultVO<T> {
 	private String msg;
 
 	private T data;
+
+	public ResultVO() {
+	}
+
+	public ResultVO(Integer code, String msg) {
+		this.code = code;
+		this.msg = msg;
+	}
+
+	public ResultVO(Integer code, String msg, T data) {
+		this.code = code;
+		this.msg = msg;
+		this.data = data;
+	}
 }

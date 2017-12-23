@@ -1,5 +1,6 @@
 package com.fizz.service.impl;
 
+import com.fizz.constant.PageConstant;
 import com.fizz.dateobject.ProductInfo;
 import com.fizz.service.ProductInfoService;
 import org.junit.Assert;
@@ -36,7 +37,7 @@ public class ProductInfoServiceImplTest {
 
 	@Test
 	public void findAll() throws Exception {
-		Assert.assertNotNull(service.findAll(new PageRequest(0, 10)));
+		Assert.assertNotNull(service.findAll(new PageRequest(PageConstant.PAGE, PageConstant.SIZE)));
 	}
 
 	@Test

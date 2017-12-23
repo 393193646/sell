@@ -1,5 +1,7 @@
 package com.fizz.dateobject;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fizz.util.serializer.Date2LongSerializerUtil;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -21,7 +23,9 @@ public class OrderDetail {
   private BigDecimal productPrice;
   private Integer productQuantity;
   private String productIcon;
+  @JsonSerialize(using = Date2LongSerializerUtil.class)
   private Date createTime;
+  @JsonSerialize(using = Date2LongSerializerUtil.class)
   private Date updateTime;
 
   public OrderDetail() {

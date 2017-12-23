@@ -1,8 +1,9 @@
-package com.fizz.service;
+package com.fizz.service.impl;
 
 import com.fizz.Enums.OrderStatusEnum;
 import com.fizz.Enums.PayStatusEnum;
 import com.fizz.Enums.ResultEnum;
+import com.fizz.constant.PageConstant;
 import com.fizz.dao.OrderMasterDao;
 import com.fizz.dateobject.OrderDetail;
 import com.fizz.dateobject.OrderMaster;
@@ -10,6 +11,9 @@ import com.fizz.dateobject.ProductInfo;
 import com.fizz.dto.CartDto;
 import com.fizz.dto.OrderDTO;
 import com.fizz.exception.SellException;
+import com.fizz.service.OrderDetailService;
+import com.fizz.service.OrderService;
+import com.fizz.service.ProductInfoService;
 import com.fizz.util.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -19,7 +23,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -78,9 +81,9 @@ public class OrderServiceImpl implements OrderService {
 			amount = amount.add(productInfoDB.getProductPrice().multiply(new BigDecimal(orderDetail.getProductQuantity())));
 		}
 		OrderMaster orderMaster = new OrderMaster();
+		orderDTO.setOrderId(orderId);
+		orderDTO.setOrderAmount(amount);
 		BeanUtils.copyNotNullProperties(orderDTO, orderMaster);
-		orderMaster.setOrderId(orderId);
-		orderMaster.setOrderAmount(amount);
 		//保存订单
 		OrderMaster orderDB = save(orderMaster);
 		//保存订单详情
@@ -105,12 +108,9 @@ public class OrderServiceImpl implements OrderService {
 		OrderDTO orderDTO = new OrderDTO();
 		OrderMaster one = dao.findOne(orderId);
 		if (one == null) {
-			throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+			return null;
 		}
 		List<OrderDetail> orderDetailList = orderDetailService.findByOrderId(orderId);
-		if (CollectionUtils.isEmpty(orderDetailList)) {
-			throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
-		}
 		orderDTO.setOrderDetails(orderDetailList);
 		BeanUtils.copyNotNullProperties(dao.findOne(orderId), orderDTO);
 		return orderDTO;
@@ -118,7 +118,7 @@ public class OrderServiceImpl implements OrderService {
 
 	@Override
 	public Page<OrderDTO> findList(String buyerOpenId, Pageable pageable) {
-		Page<OrderMaster> all = dao.findAllByBuyerOpenid(buyerOpenId, new PageRequest(0, 10));
+		Page<OrderMaster> all = dao.findAllByBuyerOpenid(buyerOpenId, new PageRequest(PageConstant.PAGE, PageConstant.SIZE));
 		return all.map(o -> {
 			OrderDTO orderDTO = new OrderDTO();
 			BeanUtils.copyNotNullProperties(o, orderDTO);
