@@ -38,9 +38,7 @@ public class WeixinController {
 		String[] arr = new String[]{tokenDTO.getTimestamp(), WeixinConstant.token, tokenDTO.getNonce()};
 		Arrays.sort(arr);
 		StringBuffer sb = new StringBuffer();
-		sb.append(arr[0]);
-		sb.append(arr[1]);
-		sb.append(arr[2]);
+		sb.append(arr[0]).append(arr[1]).append(arr[2]);
 		String hash = null;
 		try {
 			hash = new String(Hex.encodeHex(MessageDigest.getInstance("SHA-1").
@@ -51,4 +49,5 @@ public class WeixinController {
 		return (StringUtils.isNoneBlank(hash) && hash.equals(tokenDTO.getSignature()))
 				? tokenDTO.getEchostr() : "";
 	}
+
 }

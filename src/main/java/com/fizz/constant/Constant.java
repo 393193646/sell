@@ -8,4 +8,5 @@ public class Constant {
 
 	public static final String charset = "UTF-8";
 
+	public static final String redis_prop = "redis.properties";
 }
